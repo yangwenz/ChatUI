@@ -7,6 +7,7 @@ from web.layout import create_banner, create_textbox, \
     create_conversation_box, create_controls
 
 import web.callbacks
+from web.callbacks import PLAYER_A
 
 app = dash.Dash(
     __name__,
@@ -26,20 +27,24 @@ app.layout = dbc.Container(
         create_controls(),
         html.Br(),
         dbc.Spinner(html.Div(id="loading-component")),
-        dcc.Store(id="store-conversation", data=""),
+        dcc.Store(id="chat-history", data=""),
+        dcc.Store(id="all-chats", data=""),
     ],
 )
 
 
 @app.callback(
     Output("display-conversation", "children"),
-    Input("store-conversation", "data")
+    Input("all-chats", "data")
 )
-def update_display(chat_history):
-    return [
-        create_textbox(app, text, box="user") if i % 2 == 0 else create_textbox(app, text, box="AI")
-        for i, text in enumerate(chat_history.split("<split>")[:-1])
-    ]
+def update_display(chats):
+    boxes = []
+    for i, text in enumerate(chats.split("<split>")[:-1]):
+        if text.startswith(PLAYER_A):
+            boxes.append(create_textbox(app, text, box="user"))
+        else:
+            boxes.append(create_textbox(app, text, box="AI"))
+    return boxes
 
 
 @app.server.route("/ping")

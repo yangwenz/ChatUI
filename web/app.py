@@ -39,12 +39,15 @@ app.layout = dbc.Container(
 )
 def update_display(chats):
     boxes = []
+    flag = False
     for i, text in enumerate(chats.split("<split>")[:-1]):
         if text.startswith(PLAYER_A):
             boxes.append(create_textbox(app, text, box="user"))
+            flag = True
         else:
-            color = "secondary" if i % 4 == 1 else "info"
+            color = "secondary" if flag else "info"
             boxes.append(create_textbox(app, text, box="AI", color=color))
+            flag = False
     return boxes
 
 

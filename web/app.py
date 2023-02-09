@@ -43,7 +43,8 @@ def update_display(chats):
         if text.startswith(PLAYER_A):
             boxes.append(create_textbox(app, text, box="user"))
         else:
-            boxes.append(create_textbox(app, text, box="AI"))
+            color = "secondary" if i % 4 == 1 else "info"
+            boxes.append(create_textbox(app, text, box="AI", color=color))
     return boxes
 
 

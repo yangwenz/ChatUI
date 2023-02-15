@@ -20,7 +20,7 @@ def create_header(app, name):
     return dbc.Row([dbc.Col(title, md=8), dbc.Col(logo, md=4)])
 
 
-def create_textbox(app, text, box="AI", name="Robot", color=None, **kwargs):
+def create_textbox(app, text, box="AI", name="Robot", color=None, inverse=True, **kwargs):
     text = text.replace(f"{name}:", "").replace("You:", "")
     style = {
         "max-width": "60%",
@@ -43,7 +43,7 @@ def create_textbox(app, text, box="AI", name="Robot", color=None, **kwargs):
             },
         )
         color = "primary" if not color else color
-        textbox = dbc.Card(text, style=style, body=True, color=color, inverse=True)
+        textbox = dbc.Card(text, style=style, body=True, color=color, inverse=inverse)
         return html.Div([thumbnail, textbox])
 
     elif box == "AI":
@@ -59,7 +59,7 @@ def create_textbox(app, text, box="AI", name="Robot", color=None, **kwargs):
             },
         )
         color = "light" if not color else color
-        textbox = dbc.Card(text, style=style, body=True, color=color, inverse=True)
+        textbox = dbc.Card(text, style=style, body=True, color=color, inverse=inverse)
         return html.Div([thumbnail, textbox])
     else:
         raise ValueError("Incorrect option for `box`.")

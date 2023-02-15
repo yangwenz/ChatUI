@@ -33,21 +33,30 @@ app.layout = dbc.Container(
 )
 
 
+def _process_bot_responses(responses):
+    text = "<br>".join(responses)
+    return text
+
+
 @app.callback(
     Output("display-conversation", "children"),
     Input("all-chats", "data")
 )
 def update_display(chats):
     boxes = []
-    flag = False
+    bot_responses = []
     for i, text in enumerate(chats.split("<split>")[:-1]):
         if text.startswith(PLAYER_A):
+            if len(bot_responses) > 0:
+                boxes.append(create_textbox(
+                    app, _process_bot_responses(bot_responses), box="AI", inverse=False))
+                bot_responses = []
             boxes.append(create_textbox(app, text, box="user"))
-            flag = True
         else:
-            color = "secondary" if flag else "info"
-            boxes.append(create_textbox(app, text, box="AI", color=color))
-            flag = False
+            bot_responses.append(text)
+    if len(bot_responses) > 0:
+        boxes.append(create_textbox(
+            app, _process_bot_responses(bot_responses), box="AI", inverse=False))
     return boxes
 
 

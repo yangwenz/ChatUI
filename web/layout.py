@@ -21,7 +21,8 @@ def create_header(app, name):
 
 
 def create_textbox(app, text, box="AI", name="Robot", color=None, inverse=True, **kwargs):
-    text = text.replace(f"{name}:", "").replace("You:", "")
+    if isinstance(text, str):
+        text = text.replace(f"{name}:", "").replace("You:", "")
     style = {
         "max-width": "60%",
         "width": "max-content",

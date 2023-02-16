@@ -35,11 +35,11 @@ app.layout = dbc.Container(
 
 def _process_bot_responses(responses):
     children = []
-    colors = ["green", "blue"]
+    colors = ["green", "grey"]
     for i, text in enumerate(responses):
         text = text.replace("Robot:", "").replace("You:", "")
         if i == 0:
-            children.append(html.Label(responses[0]))
+            children.append(html.Label(text, style={"font-weight": "bold"}))
             children.append(html.Br())
         else:
             children.append(html.Label(text, style={"color": colors[i % len(colors)]}))
